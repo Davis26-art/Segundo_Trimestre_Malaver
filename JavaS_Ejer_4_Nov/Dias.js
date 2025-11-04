@@ -1,0 +1,51 @@
+console.log('=== Promedio de Números ===');
+let numeros = [5, 7, 8, 9, 10];
+let suma = 0;
+
+for (let i = 0; i < numeros.length; i++) {
+  suma += numeros[i];
+}
+
+let promedio = suma / numeros.length;
+console.log(`Los números son: ${numeros}`);
+console.log(`El promedio es: ${promedio}`);
+console.log('=== Contador ===');
+let contador = 1;
+
+while (contador <= 10) {
+  console.log(`Número: ${contador}`);
+  contador++;
+}
+
+console.log('Fin del conteo.');
+console.log('=== Adivina el Número ===');
+let numeroSecreto = Math.floor(Math.random() * 10) + 1;
+let intento = 7;
+
+if (intento === numeroSecreto) {
+  console.log('🎉 ¡Adivinaste el número!');
+} else if (intento > numeroSecreto) {
+  console.log(`El número secreto es menor que ${intento}`);
+} else {
+  console.log(`El número secreto es mayor que ${intento}`);
+}
+
+console.log(`El número secreto era: ${numeroSecreto}`);
+console.log('=== Día de la Semana ===');
+
+function obtenerDia(numero) {
+  switch (numero) {
+    case 1: return 'Lunes';
+    case 2: return 'Martes';
+    case 3: return 'Miércoles';
+    case 4: return 'Jueves';
+    case 5: return 'Viernes';
+    case 6: return 'Sábado';
+    case 7: return 'Domingo';
+    default: return 'Número inválido';
+  }
+}
+
+for (let i = 1; i <= 7; i++) {
+  console.log(`${i}: ${obtenerDia(i)}`);
+}

@@ -1,0 +1,11 @@
+
+Factura para: David
+------------------------------
+Juguito - Precio: $1800 x 2 = $3600
+Papitas - Precio: $2500 x 1 = $2500
+Takis - Precio: $2300 x 1 = $2300
+
+Subtotal: $8400.00
+IVA (16%): $1344.00
+Total: $9744.00
+==============================

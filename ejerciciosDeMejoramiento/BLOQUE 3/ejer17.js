@@ -1,0 +1,4 @@
+function esMayorDeEdad(edad) {
+  return edad >= 18;
+}
+console.log(esMayorDeEdad(20));

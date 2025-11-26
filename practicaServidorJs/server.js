@@ -2,119 +2,54 @@ import http from 'http';
 import fs from 'fs';
 
 const port = 3000;
-const ARCHIVO = 'registro.txt';
+const FILE = 'registro.txt';
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
 
-    // ===== RUTA INICIO =====
+    const volver = `<br><a href="/inicio">Volver</a>`;
+
     if (req.url === '/' || req.url === '/inicio') {
         return res.end(`
-            <h1>CRUD con archivos .txt usando FS</h1>
-            <p>Selecciona una acción:</p>
+            <h1>CRUD con FS</h1>
             <ul>
-                <li><a href="/crear">Crear archivo</a></li>
-                <li><a href="/agregar">Agregar contenido</a></li>
-                <li><a href="/leer">Leer archivo</a></li>
-                <li><a href="/actualizar">Actualizar archivo</a></li>
-                <li><a href="/eliminar">Eliminar archivo</a></li>
+                <li><a href="/crear">Crear</a></li>
+                <li><a href="/agregar">Agregar</a></li>
+                <li><a href="/leer">Leer</a></li>
+                <li><a href="/actualizar">Actualizar</a></li>
+                <li><a href="/eliminar">Eliminar</a></li>
             </ul>
         `);
     }
 
-    // ===== CREATE =====
     if (req.url === '/crear') {
-
-        // Si NO existe, lo crea
-        if (!fs.existsSync(ARCHIVO)) {
-            fs.writeFileSync(ARCHIVO, 'Inicio del registro de actividades\n');
-        }
-
-        return res.end(`
-            <h1>Crear archivo</h1>
-            <p>Archivo creado exitosamente.</p>
-            <a href="/inicio">Volver</a>
-        `);
+        if (!fs.existsSync(FILE)) fs.writeFileSync(FILE, 'Inicio del registro\n');
+        return res.end(`<h2>Archivo creado</h2>${volver}`);
     }
 
-    // ===== APPEND =====
     if (req.url === '/agregar') {
-
-        const nuevaLinea = `Nueva actividad: ${new Date().toISOString()}\n`;
-
-        fs.appendFileSync(ARCHIVO, nuevaLinea);
-
-        return res.end(`
-            <h1>Agregar contenido</h1>
-            <p>Se agregó esta línea:</p>
-            <pre>${nuevaLinea}</pre>
-            <a href="/inicio">Volver</a>
-        `);
+        const linea = `Actividad: ${new Date().toISOString()}\n`;
+        fs.appendFileSync(FILE, linea);
+        return res.end(`<h2>Línea agregada</h2><pre>${linea}</pre>${volver}`);
     }
 
-    // ===== READ =====
     if (req.url === '/leer') {
-
-        if (!fs.existsSync(ARCHIVO)) {
-            return res.end(`
-                <h1>Error</h1>
-                <p>El archivo no existe.</p>
-                <a href="/inicio">Volver</a>
-            `);
-        }
-
-        const contenido = fs.readFileSync(ARCHIVO, 'utf8');
-
-        return res.end(`
-            <h1>Leer archivo</h1>
-            <pre>${contenido}</pre>
-            <a href="/inicio">Volver</a>
-        `);
+        if (!fs.existsSync(FILE)) return res.end(`<h2>No existe archivo</h2>${volver}`);
+        return res.end(`<h2>Contenido:</h2><pre>${fs.readFileSync(FILE, 'utf8')}</pre>${volver}`);
     }
 
-    // ===== UPDATE =====
     if (req.url === '/actualizar') {
-
-        const nuevoContenido = `REGISTRO ACTUALIZADO\nÚltima modificación: ${new Date().toISOString()}\n`;
-
-        fs.writeFileSync(ARCHIVO, nuevoContenido);
-
-        return res.end(`
-            <h1>Actualizar archivo</h1>
-            <p>Archivo reemplazado completamente por:</p>
-            <pre>${nuevoContenido}</pre>
-            <a href="/inicio">Volver</a>
-        `);
+        const nuevo = `ACTUALIZADO\n${new Date().toISOString()}\n`;
+        fs.writeFileSync(FILE, nuevo);
+        return res.end(`<h2>Archivo actualizado</h2><pre>${nuevo}</pre>${volver}`);
     }
 
-    // ===== DELETE =====
     if (req.url === '/eliminar') {
-
-        if (fs.existsSync(ARCHIVO)) {
-            fs.unlinkSync(ARCHIVO);
-            return res.end(`
-                <h1>Eliminar archivo</h1>
-                <p>Archivo eliminado correctamente.</p>
-                <a href="/inicio">Volver</a>
-            `);
-        }
-
-        return res.end(`
-            <h1>Eliminar archivo</h1>
-            <p>El archivo no existe.</p>
-            <a href="/inicio">Volver</a>
-        `);
+        if (fs.existsSync(FILE)) fs.unlinkSync(FILE);
+        return res.end(`<h2>Archivo eliminado (si existía)</h2>${volver}`);
     }
 
-    // ===== RUTA NO EXISTE =====
-    res.end(`
-        <h1>Error 404</h1>
-        <p>Ruta no encontrada: ${req.url}</p>
-        <a href="/inicio">Volver</a>
-    `);
-
+    res.end(`<h2>404</h2>Ruta no encontrada.${volver}`);
 });
 
-server.listen(port, () => {
-    console.log(`Servidor arriba en http://localhost:${port}`);
-});
+server.listen(port, () => console.log(`http://localhost:${port}`));
